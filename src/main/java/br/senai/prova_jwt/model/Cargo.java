@@ -21,4 +21,5 @@ public class Cargo {
     private String descricao;
     private Double salario;
 
+
 }

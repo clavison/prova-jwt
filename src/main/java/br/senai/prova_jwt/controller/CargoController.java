@@ -46,4 +46,5 @@ public class CargoController {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
 }

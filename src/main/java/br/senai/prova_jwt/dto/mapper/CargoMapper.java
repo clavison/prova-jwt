@@ -24,4 +24,5 @@ public class CargoMapper {
         cargo.setSalario(dto.getSalario());
         return cargo;
     }
+
 }

@@ -14,4 +14,5 @@ public class CargoDto {
     private String nome;
     private String descricao;
     private Double salario;
+
 }

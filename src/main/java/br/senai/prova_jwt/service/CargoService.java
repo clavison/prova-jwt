@@ -36,4 +36,5 @@ public class CargoService {
         return repository.findAll()
                 .stream().map(CargoMapper::toDto).toList();
     }
+
 }
