@@ -26,7 +26,6 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuarioDto> buscarPorId(@PathVariable Long id) {
         UsuarioDto dto = service.buscarPorId(id);
         if (dto == null) return ResponseEntity.notFound().build();
@@ -34,13 +33,11 @@ public class UsuarioController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UsuarioDto>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 
     @GetMapping("/username/{username}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuarioDto> buscarPorUsername(@PathVariable String username) {
         UsuarioDto dto = service.buscarPorUsername(username);
         if (dto == null) return ResponseEntity.notFound().build();
@@ -48,7 +45,6 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody UsuarioDto dto) {
         if (service.buscarPorId(id) == null) return ResponseEntity.notFound().build();
         dto.setId(id);
@@ -56,7 +52,6 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.excluir(id);
         return ResponseEntity.noContent().build();

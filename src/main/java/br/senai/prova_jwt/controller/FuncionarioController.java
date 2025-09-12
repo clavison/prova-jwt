@@ -18,14 +18,12 @@ public class FuncionarioController {
     private FuncionarioService service;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FuncionarioDto> criar(@RequestBody FuncionarioDto dto) {
         FuncionarioDto salvo = service.salvar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FuncionarioDto> buscarPorId(@PathVariable Long id) {
         FuncionarioDto dto = service.buscarPorId(id);
         if (dto == null) return ResponseEntity.notFound().build();
@@ -38,7 +36,6 @@ public class FuncionarioController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FuncionarioDto> atualizar(@PathVariable Long id, @RequestBody FuncionarioDto dto) {
         if (service.buscarPorId(id) == null) return ResponseEntity.notFound().build();
         dto.setId(id);
@@ -46,7 +43,6 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.excluir(id);
         return ResponseEntity.noContent().build();
