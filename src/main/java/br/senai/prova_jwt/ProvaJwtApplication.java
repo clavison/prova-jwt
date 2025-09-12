@@ -8,6 +8,7 @@ public class ProvaJwtApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProvaJwtApplication.class, args);
+
 	}
 
 }
