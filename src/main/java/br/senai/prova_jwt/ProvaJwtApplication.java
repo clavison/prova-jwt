@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ProvaJwtApplication {
 
+    
 	public static void main(String[] args) {
 		SpringApplication.run(ProvaJwtApplication.class, args);
 	}
