@@ -61,4 +61,5 @@ public class UsuarioController {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
 }
