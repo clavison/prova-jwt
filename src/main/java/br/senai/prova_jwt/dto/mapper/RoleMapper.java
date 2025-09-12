@@ -18,4 +18,5 @@ public class RoleMapper {
         role.setNome(dto.getNome());
         return role;
     }
+
 }

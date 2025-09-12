@@ -46,4 +46,5 @@ public class RoleController {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
 }

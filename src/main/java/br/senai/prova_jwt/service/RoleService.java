@@ -36,4 +36,5 @@ public class RoleService {
         return repository.findAll()
                 .stream().map(RoleMapper::toDto).toList();
     }
+
 }
