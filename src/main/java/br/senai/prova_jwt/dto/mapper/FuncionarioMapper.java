@@ -28,4 +28,5 @@ public class FuncionarioMapper {
         f.setCargo(cargo);
         return f;
     }
+
 }

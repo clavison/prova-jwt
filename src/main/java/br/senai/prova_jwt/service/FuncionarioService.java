@@ -40,4 +40,5 @@ public class FuncionarioService {
         return funcionarioRepository.findAll()
                 .stream().map(FuncionarioMapper::toDto).toList();
     }
+
 }

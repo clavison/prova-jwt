@@ -16,4 +16,5 @@ public class FuncionarioDto {
     private String telefone;
     private Long cargoId; // referência ao cargo
 
+
 }

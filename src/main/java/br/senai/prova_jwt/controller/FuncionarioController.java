@@ -51,4 +51,5 @@ public class FuncionarioController {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
 }
