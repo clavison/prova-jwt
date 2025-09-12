@@ -2,6 +2,7 @@ package br.senai.prova_jwt.configuration;
 
 
 import br.senai.prova_jwt.repository.UsuarioRepository;
+import br.senai.prova_jwt.util.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -79,5 +80,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }
