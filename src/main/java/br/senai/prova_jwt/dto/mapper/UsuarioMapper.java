@@ -1,7 +1,10 @@
 package br.senai.prova_jwt.dto.mapper;
 
 import br.senai.prova_jwt.dto.UsuarioDto;
+import br.senai.prova_jwt.model.Role;
 import br.senai.prova_jwt.model.Usuario;
+
+import java.util.stream.Collectors;
 
 public class UsuarioMapper {
 
@@ -10,16 +13,19 @@ public class UsuarioMapper {
         return new UsuarioDto(
                 usuario.getId(),
                 usuario.getUsername(),
-                usuario.getPassword(),
-                usuario.getRoles()
+                null,
+                usuario.getRoles().stream()
+                        .map(Role::getNome)
+                        .collect(Collectors.toSet())
         );
     }
 
-    public static Usuario toEntity(UsuarioDto usuarioDto) {
-        if (usuarioDto == null) return null;
+    public static Usuario toEntity(UsuarioDto dto) {
+        if (dto == null) return null;
         Usuario usuario = new Usuario();
-        usuario.setId(usuarioDto.getId());
-        usuario.setNome(usuarioDto.getNome());
+        usuario.setId(dto.getId());
+        usuario.setUsername(dto.getUsername());
+        usuario.setPassword(dto.getPassword());
         return usuario;
     }
 }

@@ -1,6 +1,8 @@
 package br.senai.prova_jwt.controller;
 
 import br.senai.prova_jwt.dto.UsuarioDto;
+import br.senai.prova_jwt.dto.mapper.UsuarioMapper;
+import br.senai.prova_jwt.model.Usuario;
 import br.senai.prova_jwt.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,9 @@ public class UsuarioController {
     private UsuarioService service;
 
     @PostMapping
-    public ResponseEntity<?> criar(@RequestBody UsuarioDto dto) {
-        service.salvar(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<UsuarioDto> criar(@RequestBody UsuarioDto dto) {
+        Usuario usuario = service.salvar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(usuario));
     }
 
     @GetMapping
@@ -42,10 +44,10 @@ public class UsuarioController {
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
-        UsuarioDto alvo = service.buscarPorId(id);
+        UsuarioDto usuario = service.buscarPorId(id);
 
         // USER só pode editar ele mesmo
-        if (!isAdmin && !requester.equals(alvo.getLogin())) {
+        if (!isAdmin && !requester.equals(usuario.getUsername())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
