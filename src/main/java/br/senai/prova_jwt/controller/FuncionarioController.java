@@ -39,9 +39,10 @@ public class FuncionarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioDto> alterar(@PathVariable Long id, @RequestBody FuncionarioDto funcionarioDto, Authentication authentication) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<FuncionarioDto> alterar(@PathVariable Long id, @RequestBody FuncionarioDto funcionarioDto) {
         try {
-            FuncionarioDto funcionarioAtualizado = funcionarioService.alterar(id, funcionarioDto, authentication);
+            FuncionarioDto funcionarioAtualizado = funcionarioService.alterar(id, funcionarioDto);
             return ResponseEntity.ok(funcionarioAtualizado);
         } catch (SecurityException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -55,11 +56,10 @@ public class FuncionarioController {
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) BigDecimal salarioMin,
             @RequestParam(required = false) BigDecimal salarioMax,
-            Pageable pageable,
-            Authentication authentication
+            Pageable pageable
     ) {
         FuncionarioFiltroDto filtro = new FuncionarioFiltroDto(nome, salarioMin, salarioMax, null);
-        return funcionarioService.listarComFiltros(filtro, pageable, authentication);
+        return funcionarioService.listarComFiltros(filtro, pageable);
     }
 
     @GetMapping("/{id}")

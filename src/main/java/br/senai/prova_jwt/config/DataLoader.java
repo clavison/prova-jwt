@@ -24,14 +24,7 @@ public class DataLoader {
                 return roleRepository.save(newRole);
             });
 
-            Role userRole = roleRepository.findByNome("USER").orElseGet(() -> {
-                Role newRole = new Role();
-                newRole.setNome("USER");
-                return roleRepository.save(newRole);
-            });
-
-            // Create admin user if not exists
-            if (usuarioRepository.findByUsername("admin").isEmpty()) {
+            if (usuarioRepository.findByLogin("admin").isEmpty()) {
                 Usuario adminUser = new Usuario();
                 adminUser.setLogin("admin");
                 adminUser.setSenha(passwordEncoder.encode("admin123"));
@@ -40,18 +33,6 @@ public class DataLoader {
                 adminUser.setRoles(adminRoles);
                 usuarioRepository.save(adminUser);
                 System.out.println("Admin user created.");
-            }
-
-            // Create a regular user for testing if not exists
-            if (usuarioRepository.findByUsername("user").isEmpty()) {
-                Usuario regularUser = new Usuario();
-                regularUser.setLogin("user");
-                regularUser.setSenha(passwordEncoder.encode("user123"));
-                Set<Role> userRoles = new HashSet<>();
-                userRoles.add(userRole);
-                regularUser.setRoles(userRoles);
-                usuarioRepository.save(regularUser);
-                System.out.println("Regular user created.");
             }
         };
     }
