@@ -41,7 +41,6 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // A linha do Swagger foi removida, como solicitado.
                         .requestMatchers("/auth/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/funcionarios", "/funcionarios/**").hasAnyRole("ADMIN", "USER")
