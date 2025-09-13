@@ -1,4 +1,4 @@
-package com.erp.funcionariocargo.domains.auth.role;
+package br.senai.prova_jwt.domains.auth.role;
 
 
 import jakarta.persistence.Entity;

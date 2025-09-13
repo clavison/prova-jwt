@@ -1,6 +1,6 @@
-package com.erp.funcionariocargo.domains.auth.usuario;
+package br.senai.prova_jwt.domains.auth.usuario;
 
-import com.erp.funcionariocargo.domains.auth.role.Role;
+import br.senai.prova_jwt.domains.auth.role.Role;
 import org.springframework.data.jpa.domain.Specification;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Join;

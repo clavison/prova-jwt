@@ -1,9 +1,10 @@
-package com.erp.funcionariocargo.domains.funcionario;
+package br.senai.prova_jwt.domains.funcionario;
 
-import com.erp.funcionariocargo.domains.cargo.Cargo;
-import org.springframework.data.jpa.domain.Specification;
-import jakarta.persistence.criteria.Predicate;
+
+import br.senai.prova_jwt.domains.cargo.Cargo;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.jpa.domain.Specification;
 
 public class FuncionarioSpecification {
 

@@ -1,4 +1,4 @@
-package com.erp.funcionariocargo.domains.auth.usuario;
+package br.senai.prova_jwt.domains.auth.usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

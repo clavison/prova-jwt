@@ -1,4 +1,4 @@
-package com.erp.funcionariocargo.domains.funcionario;
+package br.senai.prova_jwt.domains.funcionario;
 
 import lombok.Getter;
 import lombok.Setter;

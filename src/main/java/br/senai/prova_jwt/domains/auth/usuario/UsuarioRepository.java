@@ -1,4 +1,4 @@
-package com.erp.funcionariocargo.domains.auth.usuario;
+package br.senai.prova_jwt.domains.auth.usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

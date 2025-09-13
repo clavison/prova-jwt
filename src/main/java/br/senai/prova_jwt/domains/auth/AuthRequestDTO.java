@@ -1,4 +1,4 @@
-package com.erp.funcionariocargo.domains.auth;
+package br.senai.prova_jwt.domains.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

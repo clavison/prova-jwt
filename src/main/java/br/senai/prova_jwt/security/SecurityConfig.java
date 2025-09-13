@@ -1,7 +1,7 @@
-package com.erp.funcionariocargo.security;
+package br.senai.prova_jwt.security;
 
 
-import com.erp.funcionariocargo.domains.auth.usuario.UsuarioRepository;
+import br.senai.prova_jwt.domains.auth.usuario.UsuarioRepository;
 import com.erp.funcionariocargo.security.jwt.JwtAuthFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

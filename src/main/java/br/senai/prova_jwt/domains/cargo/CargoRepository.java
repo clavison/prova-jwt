@@ -1,4 +1,4 @@
-package com.erp.funcionariocargo.domains.cargo;
+package br.senai.prova_jwt.domains.cargo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

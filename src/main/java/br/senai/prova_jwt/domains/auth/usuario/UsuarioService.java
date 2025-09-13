@@ -1,7 +1,8 @@
-package com.erp.funcionariocargo.domains.auth.usuario;
+package br.senai.prova_jwt.domains.auth.usuario;
 
-import com.erp.funcionariocargo.domains.auth.role.Role;
-import com.erp.funcionariocargo.domains.auth.role.RoleRepository;
+
+import br.senai.prova_jwt.domains.auth.role.Role;
+import br.senai.prova_jwt.domains.auth.role.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

@@ -1,6 +1,6 @@
-package com.erp.funcionariocargo.domains.funcionario;
+package br.senai.prova_jwt.domains.funcionario;
 
-import com.erp.funcionariocargo.domains.cargo.Cargo;
+import br.senai.prova_jwt.domains.cargo.Cargo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

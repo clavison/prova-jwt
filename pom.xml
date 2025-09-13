@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.erp</groupId>
-	<artifactId>funcionariocargo</artifactId>
+	<artifactId>prova-jwt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>funcionariocargo</name>
+	<name>prova-jwt</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

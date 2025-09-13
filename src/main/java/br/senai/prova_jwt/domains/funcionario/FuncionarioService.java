@@ -1,14 +1,13 @@
-package com.erp.funcionariocargo.domains.funcionario;
+package br.senai.prova_jwt.domains.funcionario;
 
-import com.erp.funcionariocargo.domains.cargo.Cargo;
-import com.erp.funcionariocargo.domains.cargo.CargoService;
-import com.erp.funcionariocargo.domains.cargo.CargoMapper;
+import br.senai.prova_jwt.domains.cargo.Cargo;
+import br.senai.prova_jwt.domains.cargo.CargoMapper;
+import br.senai.prova_jwt.domains.cargo.CargoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class FuncionarioService {
@@ -24,7 +23,7 @@ public class FuncionarioService {
         
         // Buscar o cargo pelo ID se fornecido
         if (dto.getCargo() != null && dto.getCargo().getId() != null) {
-            Cargo cargo = cargoService.buscarPorId(dto.getCargo().getId()) != null ? 
+            Cargo cargo = cargoService.buscarPorId(dto.getCargo().getId()) != null ?
                 CargoMapper.toEntity(cargoService.buscarPorId(dto.getCargo().getId())) : null;
             funcionario.setCargo(cargo);
         }

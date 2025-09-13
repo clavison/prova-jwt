@@ -1,4 +1,4 @@
-package com.erp.funcionariocargo.domains.cargo;
+package br.senai.prova_jwt.domains.cargo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

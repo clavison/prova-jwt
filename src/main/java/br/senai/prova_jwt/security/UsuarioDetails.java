@@ -1,6 +1,6 @@
-package com.erp.funcionariocargo.security;
+package br.senai.prova_jwt.security;
 
-import com.erp.funcionariocargo.domains.auth.usuario.Usuario;
+import br.senai.prova_jwt.domains.auth.usuario.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
