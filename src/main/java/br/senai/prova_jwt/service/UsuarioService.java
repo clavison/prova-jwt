@@ -29,8 +29,8 @@ public class UsuarioService {
     }
 
     public Usuario salvar(UsuarioDto dto) {
-        if (usuarioRepository.findByUsername(dto.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Username já está em uso.");
+        if (usuarioRepository.findByLogin(dto.getLogin()).isPresent()) {
+            throw new IllegalArgumentException("Login já está em uso.");
         }
 
         if (dto.getRoles() == null || dto.getRoles().isEmpty()) {
@@ -38,8 +38,8 @@ public class UsuarioService {
         }
 
         Usuario user = new Usuario();
-        user.setUsername(dto.getUsername());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setLogin(dto.getLogin());
+        user.setSenha(passwordEncoder.encode(dto.getSenha()));
 
         Set<Role> roles = dto.getRoles().stream()
                 .map(nome -> roleRepository.findByNome(nome).orElseThrow())
@@ -52,7 +52,7 @@ public class UsuarioService {
         return usuarioRepository.findAll().stream().map(usuario -> {
             UsuarioDto dto = new UsuarioDto(
                     usuario.getId(),
-                    usuario.getUsername(),
+                    usuario.getLogin(),
                     null,
                     usuario.getRoles().stream()
                             .map(Role::getNome)
@@ -64,9 +64,9 @@ public class UsuarioService {
 
     public void atualizar(Long id, UsuarioDto dto) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
-        usuario.setUsername(dto.getUsername());
-        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
-            usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
+        usuario.setLogin(dto.getLogin());
+        if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
+            usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
         }
         if (dto.getRoles() != null && !dto.getRoles().isEmpty()) {
             Set<Role> roles = dto.getRoles().stream()

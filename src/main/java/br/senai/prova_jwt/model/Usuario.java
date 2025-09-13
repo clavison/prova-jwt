@@ -14,8 +14,8 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String password;
+    private String login;
+    private String senha;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usuario_roles",

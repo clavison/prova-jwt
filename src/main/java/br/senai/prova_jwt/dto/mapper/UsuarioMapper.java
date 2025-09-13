@@ -12,7 +12,7 @@ public class UsuarioMapper {
         if (usuario == null) return null;
         return new UsuarioDto(
                 usuario.getId(),
-                usuario.getUsername(),
+                usuario.getLogin(),
                 null,
                 usuario.getRoles().stream()
                         .map(Role::getNome)
@@ -24,8 +24,8 @@ public class UsuarioMapper {
         if (dto == null) return null;
         Usuario usuario = new Usuario();
         usuario.setId(dto.getId());
-        usuario.setUsername(dto.getUsername());
-        usuario.setPassword(dto.getPassword());
+        usuario.setLogin(dto.getLogin());
+        usuario.setSenha(dto.getSenha());
         return usuario;
     }
 }

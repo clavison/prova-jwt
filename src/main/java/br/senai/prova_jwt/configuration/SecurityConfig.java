@@ -3,8 +3,10 @@ package br.senai.prova_jwt.configuration;
 import br.senai.prova_jwt.repository.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final UsuarioRepository usuarioRepository;
@@ -31,17 +34,22 @@ public class SecurityConfig {
         this.usuarioRepository = usuarioRepository;
     }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        // A linha do Swagger foi removida, como solicitado.
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/usuarios/**").permitAll()
-                        .requestMatchers("/sec/publico/**").permitAll()
-                        .requestMatchers("/sec/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/sec/user/**").hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/funcionarios", "/funcionarios/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/funcionarios/**").hasRole("ADMIN")
+
+                        .requestMatchers("/cargos/**").hasRole("ADMIN")
+                        .requestMatchers("/usuarios/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -57,18 +65,18 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> usuarioRepository.findByUsername(username)
+        return login -> usuarioRepository.findByLogin(login)
                 .map(usuario -> {
                     List<GrantedAuthority> authorities = usuario.getRoles().stream()
-                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getNome()))
+                            .map(role -> new SimpleGrantedAuthority(role.getNome()))
                             .collect(Collectors.toList());
                     return new org.springframework.security.core.userdetails.User(
-                            usuario.getUsername(),
-                            usuario.getPassword(),
+                            usuario.getLogin(),
+                            usuario.getSenha(),
                             authorities
                     );
                 })
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + login));
     }
 
     @Bean

@@ -14,7 +14,7 @@ import java.util.Set;
 public class UsuarioDto {
 
     private Long id;
-    private String username;
-    private String password;
+    private String login;
+    private String senha;
     private Set<String> roles;
 }
