@@ -1,0 +1,16 @@
+package br.senai.prova_jwt.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class CargoFiltroDto {
+
+    private String nome;
+    private Double salarioMinimo;
+    private Double salarioMaximo;
+
+}
