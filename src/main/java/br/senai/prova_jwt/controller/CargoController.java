@@ -1,10 +1,12 @@
 package br.senai.prova_jwt.controller;
 
 import br.senai.prova_jwt.dto.CargoDto;
+import br.senai.prova_jwt.dto.filters.CargoFilterDto;
 import br.senai.prova_jwt.model.Cargo;
 import br.senai.prova_jwt.service.CargoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +56,20 @@ public class CargoController {
     public ResponseEntity<CargoDto> deletar(@PathVariable Long id) {
         service.excluir(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/filtro")
+    public Page<Cargo> listar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) Double salarioMin,
+            @RequestParam(required = false) Double salarioMax,
+            Pageable pageable
+    ) {
+        CargoFilterDto filtro = new CargoFilterDto();
+        filtro.setNome(nome);
+        filtro.setSalarioMin(salarioMin);
+        filtro.setSalarioMax(salarioMax);
+        return service.listarComFiltros(filtro, pageable);
     }
 
 }

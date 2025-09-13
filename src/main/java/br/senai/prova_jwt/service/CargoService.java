@@ -1,7 +1,9 @@
 package br.senai.prova_jwt.service;
 
 import br.senai.prova_jwt.dto.CargoDto;
+import br.senai.prova_jwt.dto.filters.CargoFilterDto;
 import br.senai.prova_jwt.dto.mapper.CargoMapper;
+import br.senai.prova_jwt.dto.specification.CargoSpecification;
 import br.senai.prova_jwt.model.Cargo;
 import br.senai.prova_jwt.repository.CargoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,10 @@ public class CargoService {
     public Page<Cargo> getCargosPaginados(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findAll(pageable);
+    }
+
+    public Page<Cargo> listarComFiltros(CargoFilterDto filtro, Pageable pageable) {
+        return repository.findAll(CargoSpecification.comFiltros(filtro), pageable);
     }
 
 }
