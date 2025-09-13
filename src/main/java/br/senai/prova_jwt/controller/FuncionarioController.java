@@ -1,10 +1,12 @@
 package br.senai.prova_jwt.controller;
 
 import br.senai.prova_jwt.dto.FuncionarioDto;
+import br.senai.prova_jwt.dto.filters.FuncionarioFilterDto;
 import br.senai.prova_jwt.model.Funcionario;
 import br.senai.prova_jwt.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +66,18 @@ public class FuncionarioController {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/filtro")
+    public Page<Funcionario> listar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String cargo,
+            Pageable pageable
+    ) {
+        FuncionarioFilterDto filtro = new FuncionarioFilterDto();
+        filtro.setNome(nome);
+        filtro.setCargo(cargo);
+        return service.listarComFiltros(filtro, pageable);
+    }
+
 }
 

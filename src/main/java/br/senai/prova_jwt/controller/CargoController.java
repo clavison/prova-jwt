@@ -1,13 +1,13 @@
 package br.senai.prova_jwt.controller;
 
 import br.senai.prova_jwt.dto.CargoDto;
+import br.senai.prova_jwt.model.Cargo;
 import br.senai.prova_jwt.service.CargoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cargos")
@@ -33,9 +33,10 @@ public class CargoController {
 
 
     @GetMapping
-    public ResponseEntity<List<CargoDto>> buscarTodos() {
-        List<CargoDto> cargos = service.buscarTodos();
-        return ResponseEntity.status(HttpStatus.OK).body(cargos);
+    public Page<Cargo> getCargos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
+        return service.getCargosPaginados(page, size);
     }
 
     @PutMapping("/{id}")

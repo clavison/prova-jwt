@@ -13,6 +13,6 @@ public class Funcionario {
     private Long id;
     private String nome;
     @ManyToOne
-    @JoinColumn(name = "curso_id")
+    @JoinColumn(name = "cargo_id")
     private Cargo cargo;
 }

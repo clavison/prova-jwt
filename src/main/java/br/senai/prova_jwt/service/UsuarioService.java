@@ -6,6 +6,9 @@ import br.senai.prova_jwt.model.Usuario;
 import br.senai.prova_jwt.repository.RoleRepository;
 import br.senai.prova_jwt.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +25,6 @@ public class UsuarioService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     public Usuario salvar(UsuarioDto dto) {
         Usuario user = new Usuario();
@@ -41,5 +43,10 @@ public class UsuarioService {
             dto.setRoles(usuario.getRoles().stream().map(Role::getNome).collect(Collectors.toSet()));
             return dto;
         }).toList();
+    }
+
+    public Page<Usuario> getUsuariosPaginados(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return usuarioRepository.findAll(pageable);
     }
 }
