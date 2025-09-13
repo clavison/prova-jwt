@@ -1,4 +1,4 @@
-package com.erp.funcionariocargo.security.jwt;
+package br.senai.prova_jwt.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
