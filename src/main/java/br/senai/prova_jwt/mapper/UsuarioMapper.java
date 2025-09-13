@@ -13,10 +13,24 @@ public class UsuarioMapper {
 
         UsuarioDto dto = new UsuarioDto();
         dto.setId(usuario.getId());
-        dto.setUsername(usuario.getLogin());
+        dto.setLogin(usuario.getLogin());
+        dto.setSenha(usuario.getSenha());
         dto.setRoles(usuario.getRoles().stream()
                 .map(Role::getNome)
                 .collect(Collectors.toSet()));
         return dto;
+    }
+
+    public static Usuario toEntity(UsuarioDto usuarioDto) {
+        if (usuarioDto == null) {
+            return null;
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setId(usuarioDto.getId());
+        usuario.setLogin(usuarioDto.getLogin());
+        usuario.setSenha(usuarioDto.getSenha());
+
+        return usuario;
     }
 }

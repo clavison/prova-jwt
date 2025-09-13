@@ -42,17 +42,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-
-                        .requestMatchers("/test/me").authenticated()
-                        .requestMatchers("/test/admin-only").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/usuarios/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/funcionarios/{id}").authenticated()
                         .requestMatchers(HttpMethod.GET, "/funcionarios").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/funcionarios/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/funcionarios/{id}").hasRole("ADMIN")
 
                         .requestMatchers("/cargos/**").hasRole("ADMIN")
                         .anyRequest().hasRole("ADMIN")
@@ -77,7 +74,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> usuarioRepository.findByUsername(username)
+        return username -> usuarioRepository.findByLogin(username)
                 .map(usuario -> {
                     List<GrantedAuthority> authorities = usuario.getRoles().stream()
                             .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getNome()))
