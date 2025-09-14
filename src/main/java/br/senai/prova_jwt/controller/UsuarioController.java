@@ -46,13 +46,11 @@ public class UsuarioController {
 
         UsuarioDto usuario = service.buscarPorId(id);
 
-        // USER só pode editar ele mesmo
         if (!isAdmin && !requester.equals(usuario.getLogin())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        service.atualizar(id, dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(service.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")

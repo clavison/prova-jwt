@@ -42,13 +42,11 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-
                         .requestMatchers(HttpMethod.GET, "/funcionarios", "/funcionarios/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/funcionarios/**").hasRole("ADMIN")
-
                         .requestMatchers("/cargos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/usuarios/**").hasRole("ADMIN")
-
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

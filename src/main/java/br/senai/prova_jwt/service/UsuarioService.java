@@ -62,7 +62,7 @@ public class UsuarioService {
         }).toList();
     }
 
-    public void atualizar(Long id, UsuarioDto dto) {
+    public UsuarioDto atualizar(Long id, UsuarioDto dto) {
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
         usuario.setLogin(dto.getLogin());
         if (dto.getSenha() != null && !dto.getSenha().isEmpty()) {
@@ -74,7 +74,7 @@ public class UsuarioService {
                     .collect(Collectors.toSet());
             usuario.setRoles(roles);
         }
-        usuarioRepository.save(usuario);
+        return UsuarioMapper.toDto(usuarioRepository.save(usuario));
     }
 
     public void excluir(Long id) {
