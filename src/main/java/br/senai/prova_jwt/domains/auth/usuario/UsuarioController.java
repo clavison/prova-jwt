@@ -61,4 +61,19 @@ public class UsuarioController {
         filtro.setRole(role);
         return service.listarComFiltros(filtro, pageable);
     }
+
+    /**
+     * Cria os usuários padrão (admin/admin e user/user) no banco de dados.
+     * Endpoint público - não requer autenticação.
+     * Só funciona se não existirem usuários no sistema.
+     */
+    @PostMapping("/criar-usuarios-default")
+    public ResponseEntity<String> criarUsuariosPadrao() {
+        try {
+            service.criarUsuariosPadrao();
+            return ResponseEntity.ok("Usuários padrão criados com sucesso! (admin/admin e user/user)");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
 }

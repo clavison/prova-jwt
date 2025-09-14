@@ -82,4 +82,28 @@ public class UsuarioService {
         return usuarios.map(UsuarioMapper::toDto);
     }
 
+    public void criarUsuariosPadrao() {
+        if (usuarioRepository.count() > 0) {
+            throw new RuntimeException("Não autorizado: Já existem usuários no sistema");
+        }
+
+        Role roleAdmin = roleRepository.findByDescricao("ADMIN")
+                .orElseThrow(() -> new RuntimeException("Role ADMIN não encontrada"));
+        Role roleUser = roleRepository.findByDescricao("USER")
+                .orElseThrow(() -> new RuntimeException("Role USER não encontrada"));
+
+        Usuario admin = new Usuario();
+        admin.setLogin("admin");
+        admin.setSenha(passwordEncoder.encode("admin"));
+        admin.setRoles(Set.of(roleAdmin));
+
+        Usuario user = new Usuario();
+        user.setLogin("user");
+        user.setSenha(passwordEncoder.encode("user"));
+        user.setRoles(Set.of(roleUser));
+
+        usuarioRepository.save(admin);
+        usuarioRepository.save(user);
+    }
+
 }

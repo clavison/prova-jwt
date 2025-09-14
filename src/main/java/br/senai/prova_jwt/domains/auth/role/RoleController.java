@@ -62,4 +62,15 @@ public class RoleController {
         filtro.setDescricao(descricao);
         return service.listarComFiltros(filtro, pageable);
     }
+
+    /**
+     * Cria as roles padrão (USER e ADMIN) no banco de dados.
+     * Endpoint público - não requer autenticação.
+     * Só cria as roles se ainda não existirem no banco.
+     */
+    @PostMapping("/role-setup")
+    public ResponseEntity<String> criarRolesPadrao() {
+        service.criarRolesPadrao();
+        return ResponseEntity.ok("Roles padrão (USER e ADMIN) criadas com sucesso!");
+    }
 }

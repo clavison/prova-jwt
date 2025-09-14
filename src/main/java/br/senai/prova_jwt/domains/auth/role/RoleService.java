@@ -48,4 +48,16 @@ public class RoleService {
         Page<Role> roles = repository.findAll(RoleSpecification.comFiltros(filtro), pageable);
         return roles.map(RoleMapper::toDto);
     }
+
+    public void criarRolesPadrao() {
+        if (repository.count() > 0) return; 
+
+        Role roleUser = new Role();
+        roleUser.setDescricao("USER");
+        repository.save(roleUser);
+
+        Role roleAdmin = new Role();
+        roleAdmin.setDescricao("ADMIN");
+        repository.save(roleAdmin);
+    }
 }

@@ -1,5 +1,7 @@
 # 💼 Sistema de Gestão de Funcionários
 
+- Na pasta `resources`, foi adicionado um json pronto para ser importado no postman com todas as requisicoes disponiveis no sistema.
+
 Projeto Spring Boot para gerenciamento de **Funcionários**, **Cargos** e **Usuários** com autenticação via **JWT** e controle de acesso baseado em **roles (ADMIN/USER)**. Utiliza **JPA** para persistência de dados, incluindo **CRUD completo**, **filtros** e **paginação**.
 
 ---

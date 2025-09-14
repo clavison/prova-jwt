@@ -32,14 +32,19 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        // Funcionarios
-                        .requestMatchers(HttpMethod.GET, "/funcionarios/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/funcionarios/**").hasRole("ADMIN")
-
+                        // Roles
+                        .requestMatchers("/roles/role-setup").permitAll()
+                        .requestMatchers("/roles/**").hasRole("ADMIN")
+                        
                         // Usuarios
+                        .requestMatchers("/usuarios/criar-usuarios-default").permitAll()
                         .requestMatchers(HttpMethod.GET, "/usuarios/{id}").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/usuarios/**").authenticated()
                         .requestMatchers( "/usuarios/**").hasRole("ADMIN")
+                        
+                        // Funcionarios
+                        .requestMatchers(HttpMethod.GET, "/funcionarios/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/funcionarios/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 ).sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
