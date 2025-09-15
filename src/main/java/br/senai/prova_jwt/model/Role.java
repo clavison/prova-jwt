@@ -1,6 +1,5 @@
 package br.senai.prova_jwt.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,16 +11,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Funcionario {
+public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 150)
-    private String nome;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "cargo_id", nullable = false)
-    private Cargo cargo;
+    @Column(nullable = false, unique = true)
+    private String descricao;
 
 }

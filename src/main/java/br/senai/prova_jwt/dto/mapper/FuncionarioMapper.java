@@ -1,6 +1,7 @@
 package br.senai.prova_jwt.dto.mapper;
 
 import br.senai.prova_jwt.dto.FuncionarioDto;
+import br.senai.prova_jwt.model.Cargo;
 import br.senai.prova_jwt.model.Funcionario;
 
 public class FuncionarioMapper {
@@ -11,7 +12,8 @@ public class FuncionarioMapper {
         }
         return new FuncionarioDto(
                 funcionario.getId(),
-                funcionario.getNome()
+                funcionario.getNome(),
+                funcionario.getCargo() != null ? funcionario.getCargo().getId() : null
         );
     }
 
@@ -22,6 +24,12 @@ public class FuncionarioMapper {
         Funcionario funcionario = new Funcionario();
         funcionario.setId(dto.getId());
         funcionario.setNome(dto.getNome());
+
+        if (dto.getCargoId() != null) {
+            Cargo cargo = new Cargo();
+            cargo.setId(dto.getCargoId());
+            funcionario.setCargo(cargo);
+        }
 
         return funcionario;
     }

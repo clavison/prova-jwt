@@ -5,9 +5,11 @@ import br.senai.prova_jwt.dto.CargoFiltroDto;
 import br.senai.prova_jwt.dto.mapper.CargoMapper;
 import br.senai.prova_jwt.model.Cargo;
 import br.senai.prova_jwt.service.CargoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +23,14 @@ public class CargoController {
     private CargoService cargoService;
 
     @PostMapping
-    public CargoDto criar(@RequestBody CargoDto cargoDTO) {
+    public CargoDto criar(@Valid @RequestBody CargoDto cargoDTO) {
         Cargo cargo = CargoMapper.toEntity(cargoDTO);
         Cargo salvo = cargoService.criar(cargo);
         return CargoMapper.toDTO(salvo);
     }
 
     @PostMapping("/lote")
-    public List<CargoDto> criarEmLote(@RequestBody List<CargoDto> cargosDTO) {
+    public List<CargoDto> criarEmLote(@Valid @RequestBody List<CargoDto> cargosDTO) {
         List<Cargo> cargos = cargosDTO.stream()
                 .map(CargoMapper::toEntity)
                 .collect(Collectors.toList());
@@ -54,5 +56,17 @@ public class CargoController {
 
         Page<Cargo> page = cargoService.pegarCargosPaginado(filtro, pageable);
         return page.map(CargoMapper::toDTO);
+    }
+
+    @PutMapping("/{id}")
+    public CargoDto atualizar(@PathVariable Long id, @Validated @RequestBody CargoDto cargoDTO) {
+        Cargo cargo = CargoMapper.toEntity(cargoDTO);
+        Cargo atualizado = cargoService.atualizar(id, cargo);
+        return CargoMapper.toDTO(atualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Long id) {
+        cargoService.deletar(id);
     }
 }

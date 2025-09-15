@@ -35,4 +35,21 @@ public class CargoService {
         }
         return cargoRepository.findAll(CargoSpecifications.comFiltros(filtro), pageable);
     }
+
+    public Cargo atualizar(Long id, Cargo cargoAtualizado) {
+        Cargo cargoExistente = cargoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cargo não encontrado com id: " + id));
+
+        cargoExistente.setNome(cargoAtualizado.getNome());
+        cargoExistente.setSalario(cargoAtualizado.getSalario());
+
+        return cargoRepository.save(cargoExistente);
+    }
+
+    public void deletar(Long id) {
+        if (!cargoRepository.existsById(id)) {
+            throw new RuntimeException("Cargo não encontrado com id: " + id);
+        }
+        cargoRepository.deleteById(id);
+    }
 }

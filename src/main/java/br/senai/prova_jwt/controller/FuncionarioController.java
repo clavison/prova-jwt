@@ -5,9 +5,11 @@ import br.senai.prova_jwt.dto.FuncionarioFiltroDto;
 import br.senai.prova_jwt.dto.mapper.FuncionarioMapper;
 import br.senai.prova_jwt.model.Funcionario;
 import br.senai.prova_jwt.service.FuncionarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,14 +23,14 @@ public class FuncionarioController {
     private FuncionarioService funcionarioService;
 
     @PostMapping
-    public FuncionarioDto criar(@RequestBody FuncionarioDto funcionarioDTO) {
+    public FuncionarioDto criar(@Valid @RequestBody FuncionarioDto funcionarioDTO) {
         Funcionario funcionario = FuncionarioMapper.toEntity(funcionarioDTO);
         Funcionario salvo = funcionarioService.criar(funcionario);
         return FuncionarioMapper.toDTO(salvo);
     }
 
     @PostMapping("/lote")
-    public List<FuncionarioDto> criarEmLote(@RequestBody List<FuncionarioDto> funcionariosDTO) {
+    public List<FuncionarioDto> criarEmLote(@Valid @RequestBody List<FuncionarioDto> funcionariosDTO) {
         List<Funcionario> funcionarios = funcionariosDTO.stream()
                 .map(FuncionarioMapper::toEntity)
                 .collect(Collectors.toList());
@@ -39,6 +41,7 @@ public class FuncionarioController {
                 .map(FuncionarioMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
     @GetMapping
     public Page<FuncionarioDto> listar(
             @RequestParam(required = false) String nome,
@@ -51,5 +54,22 @@ public class FuncionarioController {
 
         Page<Funcionario> page = funcionarioService.pegarFuncionariosPaginado(filtro, pageable);
         return page.map(FuncionarioMapper::toDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FuncionarioDto> atualizar(
+            @Valid
+            @PathVariable Long id,
+            @RequestBody FuncionarioDto funcionarioDTO
+    ) {
+        Funcionario funcionario = FuncionarioMapper.toEntity(funcionarioDTO);
+        Funcionario atualizado = funcionarioService.atualizar(id, funcionario);
+        return ResponseEntity.ok(FuncionarioMapper.toDTO(atualizado));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        funcionarioService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

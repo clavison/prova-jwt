@@ -12,7 +12,12 @@ public class CargoMapper {
         return new CargoDto(
                 cargo.getId(),
                 cargo.getNome(),
-                cargo.getSalario()
+                cargo.getSalario(),
+                cargo.getFuncionarios() != null
+                        ? cargo.getFuncionarios().stream()
+                        .map(FuncionarioMapper::toDTO)
+                        .toList()
+                        : null
         );
     }
 
