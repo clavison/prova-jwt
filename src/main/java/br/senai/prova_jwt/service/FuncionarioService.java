@@ -2,12 +2,17 @@ package br.senai.prova_jwt.service;
 
 
 import br.senai.prova_jwt.dto.FuncionarioDto;
+import br.senai.prova_jwt.dto.filtros.FuncionarioFiltroDto;
 import br.senai.prova_jwt.dto.mapper.FuncionarioMapper;
+import br.senai.prova_jwt.dto.specification.FuncionarioSpecification;
 import br.senai.prova_jwt.model.Cargo;
 import br.senai.prova_jwt.model.Funcionario;
 import br.senai.prova_jwt.repository.CargoRepository;
 import br.senai.prova_jwt.repository.FuncionarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +44,18 @@ public class FuncionarioService {
     public List<FuncionarioDto> buscarTodos() {
         return funcionarioRepository.findAll()
                 .stream().map(FuncionarioMapper::toDto).toList();
+    }
+
+    public Page<FuncionarioDto> getFuncionariosPaginados(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Funcionario> funcionarios = funcionarioRepository.findAll(pageable);
+        return funcionarios.map(FuncionarioMapper::toDto);
+    }
+
+    public Page<FuncionarioDto> listarComFiltros(FuncionarioFiltroDto filtro, Pageable pageable) {
+        Page<Funcionario> funcionarios =
+                funcionarioRepository.findAll(FuncionarioSpecification.comFiltros(filtro), pageable);
+        return funcionarios.map(FuncionarioMapper::toDto);
     }
 
 }

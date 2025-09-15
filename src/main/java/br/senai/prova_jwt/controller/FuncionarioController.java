@@ -1,8 +1,11 @@
 package br.senai.prova_jwt.controller;
 
 import br.senai.prova_jwt.dto.FuncionarioDto;
+import br.senai.prova_jwt.dto.filtros.FuncionarioFiltroDto;
 import br.senai.prova_jwt.service.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,10 +33,6 @@ public class FuncionarioController {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping
-    public ResponseEntity<List<FuncionarioDto>> buscarTodos() {
-        return ResponseEntity.ok(service.buscarTodos());
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<FuncionarioDto> atualizar(@PathVariable Long id, @RequestBody FuncionarioDto dto) {
@@ -47,5 +46,34 @@ public class FuncionarioController {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Endpoint original sem paginação
+    @GetMapping("/todos")
+    public ResponseEntity<List<FuncionarioDto>> buscarTodos() {
+        return ResponseEntity.ok(service.buscarTodos());
+    }
+
+    // Endpoint com filtros dinâmicos e paginação
+    @GetMapping
+    public Page<FuncionarioDto> listar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String telefone,
+            @RequestParam(required = false) Long cargoId,
+            @RequestParam(required = false) String cargoNome,
+            Pageable pageable
+    ) {
+        FuncionarioFiltroDto filtro = new FuncionarioFiltroDto();
+        filtro.setNome(nome);
+        filtro.setEmail(email);
+        filtro.setTelefone(telefone);
+        filtro.setCargoId(cargoId);
+        filtro.setCargoNome(cargoNome);
+        return service.listarComFiltros(filtro, pageable);
+    }
+
+
+
+
 
 }
