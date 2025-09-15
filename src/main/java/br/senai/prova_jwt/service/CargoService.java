@@ -2,10 +2,15 @@ package br.senai.prova_jwt.service;
 
 
 import br.senai.prova_jwt.dto.CargoDto;
+import br.senai.prova_jwt.dto.filtros.CargoFiltroDto;
 import br.senai.prova_jwt.dto.mapper.CargoMapper;
+import br.senai.prova_jwt.dto.specification.CargoSpecification;
 import br.senai.prova_jwt.model.Cargo;
 import br.senai.prova_jwt.repository.CargoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +40,17 @@ public class CargoService {
     public List<CargoDto> buscarTodos() {
         return repository.findAll()
                 .stream().map(CargoMapper::toDto).toList();
+    }
+
+    public Page<CargoDto> getCargosPaginados(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Cargo> cargos = repository.findAll(pageable);
+        return cargos.map(CargoMapper::toDto);
+    }
+
+    public Page<CargoDto> listarComFiltros(CargoFiltroDto filtro, Pageable pageable) {
+        Page<Cargo> cargos = repository.findAll(CargoSpecification.comFiltros(filtro), pageable);
+        return cargos.map(CargoMapper::toDto);
     }
 
 }

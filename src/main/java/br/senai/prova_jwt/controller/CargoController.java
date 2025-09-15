@@ -1,8 +1,11 @@
 package br.senai.prova_jwt.controller;
 
 import br.senai.prova_jwt.dto.CargoDto;
+import br.senai.prova_jwt.dto.filtros.CargoFiltroDto;
 import br.senai.prova_jwt.service.CargoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +32,27 @@ public class CargoController {
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping
+    // Endpoint original sem paginação
+    @GetMapping("/todos")
     public ResponseEntity<List<CargoDto>> buscarTodos() {
         return ResponseEntity.ok(service.buscarTodos());
+    }
+
+    // Endpoint com filtros dinâmicos e paginação
+    @GetMapping
+    public Page<CargoDto> listar(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String descricao,
+            @RequestParam(required = false) Double salarioMin,
+            @RequestParam(required = false) Double salarioMax,
+            Pageable pageable
+    ) {
+        CargoFiltroDto filtro = new CargoFiltroDto();
+        filtro.setNome(nome);
+        filtro.setDescricao(descricao);
+        filtro.setSalarioMin(salarioMin);
+        filtro.setSalarioMax(salarioMax);
+        return service.listarComFiltros(filtro, pageable);
     }
 
     @PutMapping("/{id}")
