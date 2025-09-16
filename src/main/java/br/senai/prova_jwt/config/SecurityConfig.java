@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/funcionarios/{id}").hasRole("ADMIN")
 
                         .requestMatchers("/cargos/**").hasRole("ADMIN")
+                        .requestMatchers("/roles/**").hasRole("ADMIN")
                         .anyRequest().hasRole("ADMIN")
                 )
                 .csrf(AbstractHttpConfigurer::disable)
