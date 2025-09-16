@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -35,17 +36,42 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/usuarios/**").permitAll()
-                        .requestMatchers("/sec/publico/**").permitAll()
-                        .requestMatchers("/sec/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/sec/user/**").hasAnyRole("USER", "ADMIN")
+                        // Auth endpoints - permit all
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/auth/**").permitAll()
+                        
+                        // Roles endpoints
+                        .requestMatchers(HttpMethod.POST, "/roles/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/roles/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/roles/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/roles/**").hasRole("ADMIN")
+                        
+                        // Usuarios endpoints
+                        .requestMatchers(HttpMethod.GET, "/usuarios/{id}").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/usuarios").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/todos").hasRole("ADMIN")
+                        
+                        // Funcionarios endpoints
+                        .requestMatchers(HttpMethod.GET, "/funcionarios/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/funcionarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/funcionarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/funcionarios/**").hasRole("ADMIN")
+                        
+                        // Cargos endpoints (assuming similar pattern)
+                        .requestMatchers(HttpMethod.GET, "/cargos/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/cargos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/cargos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/cargos/**").hasRole("ADMIN")
+                        
                         .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                ).sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
