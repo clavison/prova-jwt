@@ -24,4 +24,6 @@ public class FuncionarioSpecification {
             return predicate;
         };
     }
+
+
 }

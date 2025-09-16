@@ -12,11 +12,13 @@ public class Cargo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String nome;
+
+    @Column(nullable = false)
     private double salario;
 
-    @OneToMany(mappedBy = "cargo")
-    @JsonManagedReference
+    @OneToMany(mappedBy = "cargo", fetch = FetchType.LAZY)
     private List<Funcionario> funcionarios = new ArrayList<>();
 
     public Cargo() {

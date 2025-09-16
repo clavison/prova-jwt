@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CargoService {
 
@@ -18,6 +20,10 @@ public class CargoService {
 
     public Cargo criar(Cargo cargo) {
         return cargoRepository.save(cargo);
+    }
+
+    public List<Cargo> criarEmLote(List<Cargo> cargos) {
+        return cargoRepository.saveAll(cargos);
     }
 
     public Page<Cargo> pegarCargosPaginado(CargoFiltroDTO filtro, Pageable pageable) {
@@ -29,4 +35,22 @@ public class CargoService {
         }
         return cargoRepository.findAll(CargoSpecification.comFiltros(filtro), pageable);
     }
+
+    public Cargo atualizar(Long id, Cargo cargoAtualizado) {
+        Cargo cargoExistente = cargoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cargo não encontrado com id: " + id));
+
+        cargoExistente.setNome(cargoAtualizado.getNome());
+        cargoExistente.setSalario(cargoAtualizado.getSalario());
+
+        return cargoRepository.save(cargoExistente);
+    }
+
+    public void deletar(Long id) {
+        if (!cargoRepository.existsById(id)) {
+            throw new RuntimeException("Cargo não encontrado com id: " + id);
+        }
+        cargoRepository.deleteById(id);
+    }
 }
+

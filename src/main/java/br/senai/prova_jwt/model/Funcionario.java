@@ -9,11 +9,11 @@ public class Funcionario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 150)
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "cargo_id")
-    @JsonBackReference
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cargo_id", nullable = false)
     private Cargo cargo;
 
     public Funcionario() {
