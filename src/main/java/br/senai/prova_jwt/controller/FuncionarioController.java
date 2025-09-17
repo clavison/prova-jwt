@@ -3,6 +3,9 @@ package br.senai.prova_jwt.controller;
 import br.senai.prova_jwt.dto.FuncionarioDto;
 import br.senai.prova_jwt.dto.FuncionarioFiltroDto;
 import br.senai.prova_jwt.service.FuncionarioService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -11,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
-
 
     private final FuncionarioService funcionarioService;
 
@@ -47,8 +50,10 @@ public class FuncionarioController {
     ) {
         Optional<FuncionarioDto> funcionarioBusca = funcionarioService.buscarPorId(id);
         if (funcionarioBusca.isEmpty()) {
+            log.warn("Tentativa de atualizar funcionário inexistente: id {}", id);
             return ResponseEntity.notFound().build();
         } else {
+            log.info("Funcionário id {} atualizado com sucesso.", id);
             funcionarioBusca.get().setId(funcionarioDto.getId());
             return ResponseEntity.ok(funcionarioService.salvar(funcionarioDto));
         }
