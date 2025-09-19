@@ -57,11 +57,10 @@ public class FuncionarioController {
         return page.map(FuncionarioMapper::toDTO);
     }
 
-    @PutMapping("/{id}/{login}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER') and (#login == authentication.principal.username or hasRole('ADMIN'))")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FuncionarioDTO> atualizar(
             @PathVariable Long id,
-            @PathVariable String login,
             @RequestBody FuncionarioDTO funcionarioDTO
     ) {
         Funcionario funcionario = FuncionarioMapper.toEntity(funcionarioDTO);
