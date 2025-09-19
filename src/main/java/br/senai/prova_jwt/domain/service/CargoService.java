@@ -1,0 +1,54 @@
+package br.senai.prova_jwt.domain.service;
+
+import br.senai.prova_jwt.application.dto.CargoDto;
+import br.senai.prova_jwt.application.dto.filtros.CargoFiltroDto;
+import br.senai.prova_jwt.domain.specifications.CargoSpecification;
+import br.senai.prova_jwt.mapper.CargoMapper;
+import br.senai.prova_jwt.domain.model.Cargo;
+import br.senai.prova_jwt.domain.repository.CargoRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+    @Service
+    @RequiredArgsConstructor
+    public class CargoService {
+
+        private final CargoRepository repository;
+
+        public CargoDto salvar(CargoDto dto) {
+            Cargo cargo = CargoMapper.toEntity(dto);
+            Cargo salvo = repository.save(cargo);
+            return CargoMapper.toDto(salvo);
+        }
+
+        public void excluir(Long id) {
+            repository.deleteById(id);
+        }
+
+        public CargoDto buscarPorId(Long id) {
+            return repository.findById(id)
+                    .map(CargoMapper::toDto)
+                    .orElse(null);
+        }
+
+        public List<CargoDto> buscarTodos() {
+            return repository.findAll()
+                    .stream().map(CargoMapper::toDto).toList();
+        }
+
+        public Page<CargoDto> getCargosPaginados(int page, int size) {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Cargo> cargos = repository.findAll(pageable);
+            return cargos.map(CargoMapper::toDto);
+        }
+
+        public Page<CargoDto> listarComFiltros(CargoFiltroDto filtro, Pageable pageable) {
+            Page<Cargo> cargos = repository.findAll(CargoSpecification.comFiltros(filtro), pageable);
+            return cargos.map(CargoMapper::toDto);
+        }
+    }

@@ -1,0 +1,57 @@
+package br.senai.prova_jwt.application.controller;
+
+import br.senai.prova_jwt.application.dto.UsuarioDto;
+import br.senai.prova_jwt.domain.model.Usuario;
+import br.senai.prova_jwt.domain.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService service;
+
+    @PostMapping
+    public ResponseEntity<Usuario> criar(@RequestBody UsuarioDto dto) {
+        Usuario salvo = service.salvar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDto> buscarPorId(@PathVariable Long id) {
+        UsuarioDto dto = service.buscarPorId(id);
+        if (dto == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioDto>> listar() {
+        return ResponseEntity.ok(service.listar());
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UsuarioDto> buscarPorUsername(@PathVariable String username) {
+        UsuarioDto dto = service.buscarPorUsername(username);
+        if (dto == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody UsuarioDto dto) {
+        if (service.buscarPorId(id) == null) return ResponseEntity.notFound().build();
+        dto.setId(id);
+        return ResponseEntity.ok(service.salvar(dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        service.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
+
+}
