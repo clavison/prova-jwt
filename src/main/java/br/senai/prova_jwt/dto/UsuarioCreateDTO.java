@@ -7,7 +7,6 @@ public class UsuarioCreateDTO {
     private String senha;
     private List<String> roles;
 
-    // Getters e Setters
     public String getLogin() {
         return login;
     }

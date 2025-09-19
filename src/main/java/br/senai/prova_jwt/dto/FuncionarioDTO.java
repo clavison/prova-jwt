@@ -14,7 +14,6 @@ public class FuncionarioDTO {
     @NotNull(message = "O ID do cargo não pode ser nulo.")
     private Long cargoId;
 
-    // Construtores, Getters e Setters
     public FuncionarioDTO() {
     }
 

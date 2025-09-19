@@ -15,7 +15,6 @@ public class CargoFiltroDTO {
         this.salarioMax = salarioMax;
     }
 
-    // Getters e Setters
     public String getNome() {
         return nome;
     }

@@ -7,7 +7,6 @@ public class UsuarioResponseDTO {
     private String login;
     private List<String> roles;
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }
