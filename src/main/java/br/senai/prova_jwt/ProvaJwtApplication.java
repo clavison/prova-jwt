@@ -9,7 +9,6 @@ public class ProvaJwtApplication {
 
 
 	public static void main(String[] args) {
-        System.out.println("oi");
         SpringApplication.run(ProvaJwtApplication.class, args);
 	}
 
